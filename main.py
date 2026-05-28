@@ -5,10 +5,13 @@ from fastapi.responses import HTMLResponse
 from google import genai
 from google.genai import types as genai_types
 from dotenv import load_dotenv
+from fastapi.staticfiles import StaticFiles
 
 load_dotenv()
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="."), name="static")
 
 app.add_middleware(
     CORSMiddleware,
