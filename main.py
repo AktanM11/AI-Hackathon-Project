@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from google import genai
 from google.genai import types as genai_types
 from dotenv import load_dotenv
+from fastapi import FastAPI, Body
+from fastapi.responses import HTMLResponse
 load_dotenv()
 app = FastAPI()
 
@@ -36,6 +38,11 @@ ROLE & GUIDELINES:
 2. For ORT questions (Quantitative Comparisons / Чоңдуктарды салыштыруу): Explain the logic, teach shortcuts/estimation to save time.
 3. Use correct math terminology in the respective language.
 """
+
+@app.get("/", response_class=HTMLResponse)
+async def get_site():
+    with open("index.html", "r", encoding="utf-8") as f:
+        return f.read()
 
 @app.post("/ask-math")
 
