@@ -1,14 +1,14 @@
 import os
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware 
+from fastapi.responses import HTMLResponse
 from google import genai
 from google.genai import types as genai_types
 from dotenv import load_dotenv
-from fastapi import FastAPI, Body
-from fastapi.responses import HTMLResponse
-load_dotenv()
-app = FastAPI()
 
+load_dotenv()
+
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -41,11 +41,13 @@ ROLE & GUIDELINES:
 
 @app.get("/", response_class=HTMLResponse)
 async def get_site():
-    with open("index.html", "r", encoding="utf-8") as f:
-        return f.read()
+    try:
+        with open("index.html", "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        return "<h3>Файл index.html не найден в корневой папке проекта! Проверьте загрузку на GitHub.</h3>"
 
 @app.post("/ask-math")
-
 async def ask_math(question: str = Body(embed=True)):
     try:
         response = ai_client.models.generate_content(
