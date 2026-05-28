@@ -53,11 +53,11 @@ async def ask_math(question: str = Body(embed=True)):
         response = ai_client.models.generate_content(
             model='gemini-2.5-flash',
             contents=question,
-            config=genai_types.GenerateContentConfig(
-                system_instruction=ORT_TUTOR_PROMPT,
-                temperature=0.3
-            )
+            config={
+                "system_instruction": ORT_TUTOR_PROMPT,
+                "temperature": 0.3
+            }
         )
         return {"status": "success", "answer": response.text}
     except Exception as e:
-        return {"status": "error", "message": str(e)}
+        return {"status": "error", "message": f"Ошибка: {str(e)}"}
